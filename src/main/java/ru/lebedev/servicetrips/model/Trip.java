@@ -1,11 +1,8 @@
 package ru.lebedev.servicetrips.model;
 
 import lombok.Data;
-import ru.lebedev.servicetrips.response.CarResponse;
-import ru.lebedev.servicetrips.response.UserResponse;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 
 @Data
 @Entity
