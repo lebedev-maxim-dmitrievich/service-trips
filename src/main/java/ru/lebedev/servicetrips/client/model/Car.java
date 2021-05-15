@@ -1,15 +1,15 @@
-package ru.lebedev.servicetrips.response;
+package ru.lebedev.servicetrips.client.model;
 
 import lombok.Data;
 
 @Data
-public class CarResponse {
+public class Car {
 
     private int id;
     private String brande;
     private String model;
-    private double mileage;
     private String status;
+    private double mileage;
     private int yearProduction;
     private double costPerMinute;
     private String number;

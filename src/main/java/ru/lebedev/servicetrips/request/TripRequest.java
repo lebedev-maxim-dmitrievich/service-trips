@@ -8,7 +8,7 @@ import javax.validation.constraints.Min;
 public class TripRequest {
 
     @Min(1)
-    private Integer userID;
+    private Integer userId;
     @Min(1)
-    private Integer carID;
+    private Integer carId;
 }

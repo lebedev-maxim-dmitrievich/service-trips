@@ -3,13 +3,14 @@ package ru.lebedev.servicetrips.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
-import ru.lebedev.servicetrips.exception.InvalidateDataTripException;
+import ru.lebedev.servicetrips.exception.UserNotExistException;
 import ru.lebedev.servicetrips.exception.ServiceCarUnavailable;
 import ru.lebedev.servicetrips.exception.ServiceUserUnavailable;
 import ru.lebedev.servicetrips.request.TripRequest;
-import ru.lebedev.servicetrips.response.TripResponse;
+import ru.lebedev.servicetrips.response.TripFinishResponse;
+import ru.lebedev.servicetrips.response.TripStartResponse;
+import ru.lebedev.servicetrips.service.TripService;
 import ru.lebedev.servicetrips.service.impl.TripServiceImpl;
 
 import javax.validation.Valid;
@@ -18,20 +19,24 @@ import javax.validation.Valid;
 @RequestMapping("/api/trips")
 public class TripController {
 
-    private final TripServiceImpl tripServiceImpl;
+    private final TripService tripService;
 
     @Autowired
-    public TripController(TripServiceImpl tripServiceImpl) {
-        this.tripServiceImpl = tripServiceImpl;
+    public TripController(TripServiceImpl tripService) {
+        this.tripService = tripService;
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody @Valid TripRequest tripRequest, Errors errors) throws InvalidateDataTripException, ServiceCarUnavailable, ServiceUserUnavailable {
-        if (errors.hasErrors()) {
-            throw new InvalidateDataTripException("incorrect data");
-        }
-        TripResponse response = tripServiceImpl.startTrip(tripRequest.getUserID(), tripRequest.getCarID());
+    public ResponseEntity<?> createTrip(@RequestBody @Valid TripRequest tripRequest) throws ServiceCarUnavailable, ServiceUserUnavailable, UserNotExistException {
+        TripStartResponse response = tripService.startTrip(tripRequest);
 
         return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/{id}")
+    public ResponseEntity<?> finishTrip(@PathVariable Integer id) throws ServiceCarUnavailable {
+        TripFinishResponse response = tripService.finishTrip(id);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

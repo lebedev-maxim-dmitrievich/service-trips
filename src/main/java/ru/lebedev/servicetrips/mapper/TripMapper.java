@@ -2,37 +2,37 @@ package ru.lebedev.servicetrips.mapper;
 
 import org.springframework.stereotype.Service;
 import ru.lebedev.servicetrips.model.Trip;
-import ru.lebedev.servicetrips.response.CarResponse;
-import ru.lebedev.servicetrips.response.TripResponse;
-import ru.lebedev.servicetrips.response.UserResponse;
+import ru.lebedev.servicetrips.response.TripFinishResponse;
+import ru.lebedev.servicetrips.response.TripStartResponse;
 
 @Service
 public class TripMapper {
 
-    public TripResponse mapToTripResponse(Trip trip) {
-        TripResponse tripResponse = new TripResponse();
+    public TripStartResponse mapToTripStartResponse(Trip trip) {
+        TripStartResponse tripResponse = new TripStartResponse();
 
         tripResponse.setId(trip.getId());
-        tripResponse.setUserID(trip.getUserID());
-        tripResponse.setCarID(trip.getCarID());
-        tripResponse.setCarStatus(trip.getCarStatus());
+        tripResponse.setUserID(trip.getUserId());
+        tripResponse.setCarID(trip.getCarId());
+        tripResponse.setStatus(trip.getStatus());
         tripResponse.setCostPerMinute(trip.getCostPerMinute());
-        tripResponse.setStartTime(trip.getStartTime());
-        tripResponse.setFinishTime(trip.getFinishTime());
+        tripResponse.setStartTime(trip.getStartTime().toLocaleString());
 
         return tripResponse;
     }
 
-    public Trip createTrip(CarResponse carResponse, UserResponse userResponse) {
-        Trip trip = new Trip();
+    public TripFinishResponse mapToTripFinishResponse(Trip trip) {
+        TripFinishResponse tripResponse = new TripFinishResponse();
 
-        trip.setUserID(userResponse.getId());
-        trip.setCarID(carResponse.getId());
-        trip.setCostPerMinute(carResponse.getCostPerMinute());
-        trip.setCarStatus("Занята");
-        trip.setStartTime("");
-        trip.setFinishTime("");
+        tripResponse.setId(trip.getId());
+        tripResponse.setUserID(trip.getUserId());
+        tripResponse.setCarID(trip.getCarId());
+        tripResponse.setStatus(trip.getStatus());
+        tripResponse.setCostPerMinute(trip.getCostPerMinute());
+        tripResponse.setStartTime(trip.getStartTime().toLocaleString());
+        tripResponse.setFinishTime(trip.getFinishTime().toLocaleString());
+        tripResponse.setCost(trip.getCost());
 
-        return trip;
+        return tripResponse;
     }
 }
