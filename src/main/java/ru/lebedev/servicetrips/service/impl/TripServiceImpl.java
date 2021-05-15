@@ -25,17 +25,18 @@ public class TripServiceImpl implements TripService, TripServiceImplConstants {
 
     private final TripRepository tripRepository;
     private final TripMapper tripMapper;
+    private final RestTemplate restTemplate;
 
     @Autowired
-    public TripServiceImpl(TripRepository tripRepository, TripMapper tripMapper) {
+    public TripServiceImpl(TripRepository tripRepository, TripMapper tripMapper, RestTemplate restTemplate) {
         this.tripRepository = tripRepository;
         this.tripMapper = tripMapper;
+        this.restTemplate = restTemplate;
     }
 
     @Override
     public List<CarResponse> getAllCar() throws ServiceCarUnavailable {
         try {
-            RestTemplate restTemplate = new RestTemplate();
             CarResponse[] carResponses = restTemplate.getForObject(CAR_RESOURCE_URL, CarResponse[].class);
             List<CarResponse> response = Arrays.asList(carResponses);
 
@@ -78,7 +79,6 @@ public class TripServiceImpl implements TripService, TripServiceImplConstants {
 
     private UserResponse getUser(int userID) throws ServiceUserUnavailable {
         try {
-            RestTemplate restTemplate = new RestTemplate();
             UserResponse response = restTemplate.getForObject(USER_RESOURCE_URL + "/" + userID, UserResponse.class);
 
             return response;
