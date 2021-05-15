@@ -16,7 +16,6 @@ import ru.lebedev.servicetrips.response.UserResponse;
 import ru.lebedev.servicetrips.service.TripService;
 
 import javax.transaction.Transactional;
-import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -32,18 +31,6 @@ public class TripServiceImpl implements TripService, TripServiceImplConstants {
         this.tripRepository = tripRepository;
         this.tripMapper = tripMapper;
         this.restTemplate = restTemplate;
-    }
-
-    @Override
-    public List<CarResponse> getAllCar() throws ServiceCarUnavailable {
-        try {
-            CarResponse[] carResponses = restTemplate.getForObject(CAR_RESOURCE_URL, CarResponse[].class);
-            List<CarResponse> response = Arrays.asList(carResponses);
-
-            return response;
-        } catch (ResourceAccessException e) {
-            throw new ServiceCarUnavailable("service car unavailable");
-        }
     }
 
     @Override

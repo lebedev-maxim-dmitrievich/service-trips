@@ -9,8 +9,6 @@ import java.util.List;
 
 public interface TripService {
 
-    List<CarResponse> getAllCar() throws ServiceCarUnavailable;
-
     List<CarResponse> getAllAvailableCar();
 
     TripResponse startTrip(int userID, int carID) throws ServiceCarUnavailable, ServiceUserUnavailable;
