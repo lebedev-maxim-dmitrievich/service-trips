@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.lebedev.servicetrips.client.CarApiClient;
 import ru.lebedev.servicetrips.client.UserApiClient;
+import ru.lebedev.servicetrips.client.model.User;
 import ru.lebedev.servicetrips.exception.UserNotExistException;
 import ru.lebedev.servicetrips.exception.ServiceCarUnavailable;
 import ru.lebedev.servicetrips.exception.ServiceUserUnavailable;
@@ -18,7 +19,6 @@ import ru.lebedev.servicetrips.service.TripService;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
-import java.time.LocalDate;
 import java.util.Date;
 
 @Service
@@ -49,9 +49,13 @@ public class TripServiceImpl implements TripService {
             throw new UserNotExistException("user not exist");
         }
 
-        Trip trip = createTrip(userId, carId);
-        tripRepository.save(trip);
+        //TODO сделать одновременно запросы
         carApiClient.bookCar(carId);
+        userApiClient.inDrive(userId);
+
+        Trip trip = createTrip(userId, carId);
+
+        tripRepository.save(trip);
         TripStartResponse response = tripMapper.mapToTripStartResponse(trip);
 
         return response;
@@ -61,8 +65,14 @@ public class TripServiceImpl implements TripService {
     @Transactional
     public TripFinishResponse finishTrip(int tripId) throws ServiceCarUnavailable {
         Trip trip = endTrip(tripId);
+
+        int userId = trip.getUserId();
+        int carId = trip.getCarId();
+
+        userApiClient.notInDrive(userId);
+        carApiClient.freeCar(carId);
+
         tripRepository.save(trip);
-        carApiClient.freeCar(trip.getCarId());
         TripFinishResponse response = tripMapper.mapToTripFinishResponse(trip);
 
         return response;
