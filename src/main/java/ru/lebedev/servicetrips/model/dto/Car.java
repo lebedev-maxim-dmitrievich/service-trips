@@ -1,4 +1,4 @@
-package ru.lebedev.servicetrips.client.model;
+package ru.lebedev.servicetrips.model.dto;
 
 import lombok.Data;
 

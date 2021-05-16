@@ -1,19 +1,15 @@
 package ru.lebedev.servicetrips.client;
 
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
-import ru.lebedev.servicetrips.constant.ApiConstants;
 import ru.lebedev.servicetrips.exception.ServiceCarUnavailable;
-import ru.lebedev.servicetrips.client.model.Car;
+import ru.lebedev.servicetrips.model.dto.Car;
 
 @Service
-public class CarApiClient implements ApiConstants {
+public class CarApiClient {
+
+    private final String CAR_RESOURCE_URL = "http://localhost:8080/api/cars";
 
     public Car getById(int carId) throws ServiceCarUnavailable {
         try {

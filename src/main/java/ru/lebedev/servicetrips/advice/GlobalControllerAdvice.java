@@ -6,10 +6,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.client.HttpClientErrorException;
-import ru.lebedev.servicetrips.exception.UserNotExistException;
-import ru.lebedev.servicetrips.exception.InvalidateDataTripException;
-import ru.lebedev.servicetrips.exception.ServiceCarUnavailable;
-import ru.lebedev.servicetrips.exception.ServiceUserUnavailable;
+import ru.lebedev.servicetrips.exception.*;
 import ru.lebedev.servicetrips.response.ErrorResponse;
 import ru.lebedev.servicetrips.response.ValidationErrorResponse;
 import ru.lebedev.servicetrips.response.ValidationErrorResponseItem;
@@ -33,13 +30,6 @@ public class GlobalControllerAdvice {
         return new ResponseEntity<>(response, HttpStatus.SERVICE_UNAVAILABLE);
     }
 
-    @ExceptionHandler(InvalidateDataTripException.class)
-    public ResponseEntity<?> invalidateDataTripExceptionHandler(Exception e) {
-        ErrorResponse response = new ErrorResponse();
-        response.setMessage(e.getMessage());
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-    }
-
     @ExceptionHandler(HttpClientErrorException.class)
     public ResponseEntity<?> httpClientErrorExceptionHandler(HttpClientErrorException e) {
         return new ResponseEntity<>(e.getResponseBodyAsString(), HttpStatus.BAD_REQUEST);
@@ -57,6 +47,13 @@ public class GlobalControllerAdvice {
         ErrorResponse response = new ErrorResponse();
         response.setMessage(e.getMessage());
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(TripException.class)
+    public ResponseEntity<?> tripExceptionHandler(Exception e) {
+        ErrorResponse response = new ErrorResponse();
+        response.setMessage(e.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

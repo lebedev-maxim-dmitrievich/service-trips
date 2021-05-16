@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.lebedev.servicetrips.client.CarApiClient;
 import ru.lebedev.servicetrips.client.UserApiClient;
-import ru.lebedev.servicetrips.client.model.User;
+import ru.lebedev.servicetrips.exception.TripException;
 import ru.lebedev.servicetrips.exception.UserNotExistException;
 import ru.lebedev.servicetrips.exception.ServiceCarUnavailable;
 import ru.lebedev.servicetrips.exception.ServiceUserUnavailable;
@@ -19,7 +19,9 @@ import ru.lebedev.servicetrips.service.TripService;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Service
 @Transactional
@@ -40,7 +42,7 @@ public class TripServiceImpl implements TripService {
 
     @Override
     @Transactional
-    public TripStartResponse startTrip(TripRequest tripRequest) throws ServiceCarUnavailable, ServiceUserUnavailable, UserNotExistException {
+    public TripStartResponse startTrip(TripRequest tripRequest) throws ServiceCarUnavailable, ServiceUserUnavailable, UserNotExistException, TripException {
         int userId = tripRequest.getUserId();
         int carId = tripRequest.getCarId();
 
@@ -49,9 +51,21 @@ public class TripServiceImpl implements TripService {
             throw new UserNotExistException("user not exist");
         }
 
-        //TODO сделать одновременно запросы
+        List<Trip> trips = new ArrayList<>(tripRepository.findAll());
+
+        for (Trip trip : trips) {
+            if (trip.getCarId().equals(carId) && trip.getStatus().equals(TripStatus.IN_DRIVE)) {
+                throw new TripException("car not available");
+            }
+            if (trip.getUserId().equals(userId) && trip.getStatus().equals(TripStatus.IN_DRIVE)) {
+                throw new TripException("the user is already driving");
+            }
+        }
+
         carApiClient.bookCar(carId);
         userApiClient.inDrive(userId);
+
+        tripRepository.findAll();
 
         Trip trip = createTrip(userId, carId);
 

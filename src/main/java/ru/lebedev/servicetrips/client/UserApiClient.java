@@ -3,13 +3,14 @@ package ru.lebedev.servicetrips.client;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
-import ru.lebedev.servicetrips.client.model.User;
-import ru.lebedev.servicetrips.constant.ApiConstants;
+import ru.lebedev.servicetrips.model.dto.User;
 import ru.lebedev.servicetrips.exception.ServiceCarUnavailable;
 import ru.lebedev.servicetrips.exception.ServiceUserUnavailable;
 
 @Service
-public class UserApiClient implements ApiConstants {
+public class UserApiClient {
+
+    private final String USER_RESOURCE_URL = "http://localhost:8888/api/users";
 
     public boolean isExist(int userId) throws ServiceUserUnavailable {
         try {

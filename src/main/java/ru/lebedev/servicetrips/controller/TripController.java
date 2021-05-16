@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.lebedev.servicetrips.exception.TripException;
 import ru.lebedev.servicetrips.exception.UserNotExistException;
 import ru.lebedev.servicetrips.exception.ServiceCarUnavailable;
 import ru.lebedev.servicetrips.exception.ServiceUserUnavailable;
@@ -27,7 +28,7 @@ public class TripController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createTrip(@RequestBody @Valid TripRequest tripRequest) throws ServiceCarUnavailable, ServiceUserUnavailable, UserNotExistException {
+    public ResponseEntity<?> createTrip(@RequestBody @Valid TripRequest tripRequest) throws ServiceCarUnavailable, ServiceUserUnavailable, UserNotExistException, TripException {
         TripStartResponse response = tripService.startTrip(tripRequest);
 
         return new ResponseEntity<>(response, HttpStatus.CREATED);
