@@ -92,6 +92,7 @@ public class TripServiceImpl implements TripService {
         return response;
     }
 
+    @Transactional
     private Trip createTrip(int userId, int carId) throws ServiceCarUnavailable {
         Date currentDate = new Date();
 
@@ -105,6 +106,7 @@ public class TripServiceImpl implements TripService {
         return trip;
     }
 
+    @Transactional
     private Trip endTrip(int tripId) {
         Date currentDate = new Date();
 
