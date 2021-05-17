@@ -27,14 +27,14 @@ public class TripController {
         this.tripService = tripService;
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<?> createTrip(@RequestBody @Valid TripRequest tripRequest) throws ServiceCarUnavailable, ServiceUserUnavailable, UserNotExistException, TripException {
         TripStartResponse response = tripService.startTrip(tripRequest);
 
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @PostMapping("/{id}")
+    @PostMapping("/{id}/finish")
     public ResponseEntity<?> finishTrip(@PathVariable Integer id) throws ServiceCarUnavailable {
         TripFinishResponse response = tripService.finishTrip(id);
 
