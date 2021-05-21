@@ -20,7 +20,7 @@ public class Trip {
     private Integer carId;
     @Enumerated(value = EnumType.STRING)
     private TripStatus status;
-    @Column(name = "car_per_minute")
+    @Column(name = "cost_per_minute")
     private double costPerMinute;
     private Date startTime;
     private Date finishTime;
