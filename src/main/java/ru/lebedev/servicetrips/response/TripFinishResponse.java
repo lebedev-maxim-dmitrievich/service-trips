@@ -7,8 +7,8 @@ import ru.lebedev.servicetrips.model.enums.TripStatus;
 public class TripFinishResponse {
 
     private Integer id;
-    private int userID;
-    private int carID;
+    private int userId;
+    private int carId;
     private TripStatus status;
     private double costPerMinute;
     private String startTime;
