@@ -12,8 +12,8 @@ public class TripMapper {
         TripStartResponse tripResponse = new TripStartResponse();
 
         tripResponse.setId(trip.getId());
-        tripResponse.setUserID(trip.getUserId());
-        tripResponse.setCarID(trip.getCarId());
+        tripResponse.setUserId(trip.getUserId());
+        tripResponse.setCarId(trip.getCarId());
         tripResponse.setStatus(trip.getStatus());
         tripResponse.setCostPerMinute(trip.getCostPerMinute());
         tripResponse.setStartTime(trip.getStartTime().toLocaleString());
@@ -25,8 +25,8 @@ public class TripMapper {
         TripFinishResponse tripResponse = new TripFinishResponse();
 
         tripResponse.setId(trip.getId());
-        tripResponse.setUserID(trip.getUserId());
-        tripResponse.setCarID(trip.getCarId());
+        tripResponse.setUserId(trip.getUserId());
+        tripResponse.setCarId(trip.getCarId());
         tripResponse.setStatus(trip.getStatus());
         tripResponse.setCostPerMinute(trip.getCostPerMinute());
         tripResponse.setStartTime(trip.getStartTime().toLocaleString());
